@@ -5,7 +5,7 @@ const corsHeaders = {
 };
 
 type PropertyPayload = {
-  action?: 'publish' | 'delete';
+  action?: 'publish' | 'delete' | 'update';
   title?: string;
   price?: number;
   city?: string;
@@ -16,6 +16,7 @@ type PropertyPayload = {
   created_by_name?: string;
   images?: string[];
   property_url?: string;
+  serial_number?: number;
 };
 
 const response = (body: Record<string, unknown>, status = 200) => new Response(JSON.stringify(body), {
@@ -38,7 +39,7 @@ Deno.serve(async (req: Request) => {
       const deletion = await fetch(api('sendMessage'), {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ chat_id: chatId, text: `إشعار إزالة إعلان\n\nتمت إزالة الإعلان: ${property.title}\nلم يعد العقار متاحاً على موقع درة الهجرة للعقارات.` }),
+        body: JSON.stringify({ chat_id: chatId, text: `إشعار إزالة إعلان\n\nتمت إزالة الإعلان رقم ${property.serial_number ?? '—'}: ${property.title}\nلم يعد العقار متاحاً على موقع درة الهجرة للعقارات.` }),
       });
       if (!deletion.ok) return response({ error: 'Telegram request failed' }, 502);
       return response({ posted: true });
@@ -48,13 +49,15 @@ Deno.serve(async (req: Request) => {
       return response({ error: 'Invalid property data' }, 400);
     }
     const listingLabel = property.listing_type === 'rent' ? 'للإيجار' : 'للبيع';
+    const actionLabel = property.action === 'update' ? 'تحديث إعلان' : 'عرض عقاري جديد';
     const caption = [
-      `عرض عقاري جديد | ${property.title}`,
+      `${actionLabel} | ${property.title}`,
+      `رقم الإعلان: ${property.serial_number ?? '—'}`,
       `${listingLabel} · ${property.property_type}`,
       `السعر: ${new Intl.NumberFormat('ar-SA').format(property.price)} ر.س`,
       `الحي: ${property.district} · المدينة: ${property.city}`,
       `المعلن: ${property.created_by_name ?? 'درة الهجرة للعقارات'}`,
-      'التواصل: 0539000650',
+      'التواصل: 0569996744',
       `تفاصيل العقار: ${property.property_url}`,
     ].join('\n');
     const mainImage = property.images?.[0];

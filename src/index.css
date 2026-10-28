@@ -80,6 +80,7 @@ button { cursor: pointer; }
 .property-card:hover { transform: translateY(-4px); box-shadow: 0 15px 28px rgba(20, 42, 65, .12); }
 .card-topline { position: absolute; top: 11px; right: 11px; left: 11px; z-index: 2; display: flex; justify-content: space-between; align-items: center; pointer-events: none; }
 .new-badge { padding: 5px 9px; color: #16814a; background: #e4f8eb; border-radius: 99px; font-size: 9px; font-weight: 700; }
+.serial-badge { padding: 5px 9px; color: var(--gold-bright); background: rgba(181, 139, 66, .16); border: 1px solid rgba(214, 174, 94, .35); border-radius: 99px; font-size: 9px; font-weight: 700; font-family: 'DM Sans', sans-serif; }
 .listing-badge { position: static; color: #765722; background: #f5e6c1; padding: 5px 9px; font-size: 9px; border-radius: 99px; }
 .listing-badge.rent { color: #227552; background: #dff5e8; }
 .card-image { display: block; width: 100%; height: 190px; position: relative; padding: 0; border: 0; background: var(--surface-2); overflow: hidden; }
